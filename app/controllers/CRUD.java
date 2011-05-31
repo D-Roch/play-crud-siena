@@ -53,6 +53,25 @@ public abstract class CRUD extends Controller {
         render("CRUD/index.html");
     }
 
+    public static void autocomplete(String oType, String q, String searchFields) throws ClassNotFoundException {
+    	if(fields != null && fields.length == 1){
+    		fields = fields[0].split(",");
+    	}
+        
+		ObjectType type = new ObjectType(oType);
+        notFoundIfNull(type);
+        int page = 1;
+        String orderBy = null, order = null;
+        List<Object> objects = type.findPage(page, search, searchFields, orderBy, order, (String) request.args.get("where"));
+        Long count = type.count(search, searchFields, (String) request.args.get("where"));
+        Long totalCount = type.count(null, null, (String) request.args.get("where"));
+        try {
+            render(type, objects, count, totalCount, page, orderBy, order);
+        } catch (TemplateNotFoundException e) {
+            render("CRUD/autocomplete.html", type, objects, count, totalCount, page, orderBy, order);
+        }
+    }
+
     public static void list(int page, String search, String searchFields, String orderBy, String order, String[] fields) {
     	// if fields is of length 1, it means this is one field or a list of field separated by commas
     	if(fields != null && fields.length == 1){

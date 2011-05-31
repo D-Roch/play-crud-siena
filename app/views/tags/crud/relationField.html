@@ -9,10 +9,74 @@ if(_caller.currentObject)
     <label for="${field.id}">
         &{_name}
     </label>
+	<style type="text/css">
+	.&{_name}-list .&{_name} {
+	    cursor: pointer;
+	    padding: 1px 4px;
+	}
+	.&{_name}-list .selected {
+	    background: #222;
+	    color: #fff;
+	}
+	</style>
+        #{script 'jquery.autocomplete.js' /}
+        #{script 'jquery.bgiframe.min.js' /}
+        #{stylesheet 'autocomplete.css' /}
+	<script type="text/javascript">
+	var toggle&{_name} = function(&{_name}El) {
+	    var input = document.getElementById('h'+&{_name}El.id);
+	    if(&{_name}El.className.indexOf('selected') > -1) {
+		&{_name}El.className = '&{_name}';
+		input.value = '';
+	    } else {
+		&{_name}El.className = '&{_name} selected';
+		input.value = &{_name}El.id;
+	    }
+	}
+        
+        function findValue(li) {
+            if( li == null ) return alert("No match!");
 
+            // if coming from an AJAX call, let's use the CityId as the value
+            if( !!li.extra ) var sValue = li.extra[0];
+
+            // otherwise, let's just display the value in the text box
+            else var sValue = li.selectValue;
+            $("#&{_name}-items").append('<span id="'+li.extra[0]+'" onclick="toggle&{_name}(this)" class="">'+li.selectValue+'</span><input id="h'+li.extra[0]+'" type="hidden" name="${field.name}@id" value="" />');
+        }
+
+        function selectItem(li) {
+            findValue(li);
+        }
+
+        function formatItem(row) {
+            return row[0];
+        }
+
+        function lookupAjax(){
+            var oSuggest = $("#&{_name}-auto")[0].autocompleter;
+            oSuggest.findValue();
+            return false;
+        }
+        
+        $().ready(function() {
+            $("#&{_name}-auto").autocomplete('@{autocomplete()}', {
+                    delay:10,
+                    minChars:2,
+                    matchSubset:1,
+                    matchContains:1,
+                    cacheLength:10,
+                    onItemSelect:selectItem,
+                    onFindValue:findValue,
+                    formatItem:formatItem,
+                    autoFill:true,
+                    extraParams:{"oType":"&{_field.relation}"}
+            });
+        });
+	</script>
     #{if _field.multiple}
         <input type="hidden" name="${pName}" value="" />
-        <select id="${field.id}" name="${pName}" multiple="yes" #{if !keyVal}disabled="true"#{/if}>
+        <select id="${field.id}-auto" name="${pName}" multiple="yes" #{if !keyVal}disabled="true"#{/if}>
             %{ _field.choices.each() { }%
             %{
                 selected = false;
