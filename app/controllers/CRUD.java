@@ -53,6 +53,10 @@ public abstract class CRUD extends Controller {
         render("CRUD/index.html");
     }
 
+    public static void loadField(String id, String field) {
+        render("CRUD/field.html", field);
+    }
+
     public static void autocomplete(String oType, String q, String searchFields) throws ClassNotFoundException {
         ObjectType type = new ObjectType(oType);
         notFoundIfNull(type);
