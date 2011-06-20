@@ -59,9 +59,9 @@
                     #{crud.fileField name:field.name, value:(currentObject ? currentObject[field.name] : null), id:currentObject?.id /}
                 #{/if}
 
- 				*{#{if field.type == 'binary'}
-            		#{crud.fileField name:field.name, value:(currentObject ? currentObject[field.name] : null), id:currentObject?.id /}
-        		#{/if}}*
+ 		*{#{if field.type == 'binary'}
+            	    #{crud.fileField name:field.name, value:(currentObject ? currentObject[field.name] : null), id:currentObject?.id /}
+        	#{/if}}*
 
                 #{if field.type == 'longtext'}
                     #{crud.longtextField name:field.name, value:(currentObject ? currentObject[field.name] : null) /}
@@ -103,16 +103,16 @@
                 #{/if}
                 
                 #{if field.type == 'blob'}
-            		#{crud.blobField name:field.name, value:(currentObject ? currentObject[field.name] : null), id:currentObject?.id /}
-        		#{/if}
+            	    #{crud.blobField name:field.name, value:(currentObject ? currentObject[field.name] : null), id:currentObject?.id /}
+        	#{/if}
 
                 #{if field.type == 'binary'}
-            		#{crud.binaryField name:field.name, value:(currentObject ? currentObject[field.name] : null), id:currentObject?.id /}
-        		#{/if}
+            	    #{crud.binaryField name:field.name, value:(currentObject ? currentObject[field.name] : null), id:currentObject?.id /}
+        	#{/if}
 
-		        #{if field.type == 'hidden'}
-    		        #{crud.hiddenField name:field.name, value:(currentObject ? currentObject[field.name] : null) /}
-        		#{/if}
+		#{if field.type == 'hidden'}
+    		    #{crud.hiddenField name:field.name, value:(currentObject ? currentObject[field.name] : null) /}
+        	#{/if}
         		                
                 <span class="crudHelp">
                     &{am}
